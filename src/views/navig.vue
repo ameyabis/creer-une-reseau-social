@@ -2,10 +2,7 @@
   <div>
     <nav>
       <img class="logo" src="../assets/icon-left-font-monochrome-white.png" alt="">
-      <ul>
-        <li><a href="">Accueil</a></li>
-        <li><a @click="goToProfil()">Profil</a></li>
-      </ul>
+      <fa class="fa" @click="goToProfil()" icon="user-circle"/>
     </nav>
     <main id="main">
       <button class="button" @click="switchToCreate()">Créer votre publication</button>
@@ -37,14 +34,11 @@ export default {
   nav{
     width: 100%;
     display: flex;
-    ul{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      width: 100%;
-      gap: 10px;
-      padding-right: 50px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    img{
+      width: 90%;
       li{
         list-style: none;
 
@@ -52,10 +46,14 @@ export default {
     }
   }
 
-  a{
-    text-decoration: none;
+  .fa{
+    font-size: 40px;
     color: #fff;
-    font-size: 20px;
+    cursor: pointer;
+  }
+
+  a:hover{
+    cursor: pointer;
   }
 
   .logo{

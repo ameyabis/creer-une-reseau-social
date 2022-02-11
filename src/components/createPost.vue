@@ -1,13 +1,16 @@
 <template>
 <div class="center">
     <div class="card">
-        <h1 class="card__title">Créer votre publication</h1>
+        <div class="titre">
+            <h1 class="card__title">Créer votre publication</h1>
+            <fa class="fa" @click="back()" icon="arrow-left" />
+        </div>
         <div class="form-row">
-            <form id="createPost">
-                <input v-model="title" type="text" name="title" id="titlePost" placeholder="Titre"  class="form-row__input" required>
-                <input v-model="content" type="text" name="content" id="contentPost" placeholder="Contenu" class="form-row__input" required>
-                <input v-model="attachment" type="text" name="attachment" id="attachmentPost" placeholder="Piece jointe" class="form-row__input">
-                <button class="button" @click="create()">Publier</button>
+            <form id="createPost" enctype="multipart/form-data">
+                <input v-model="title" type="text" name="title" id="title" placeholder="Titre"  class="form-row__input" required>
+                <input v-model="content" type="text" name="content" id="content" placeholder="Contenu" class="form-row__input" required>
+                <input type="file" name="attachment" id="attachment" class="form-row__input" aria-describedby="inputFileAddon" @change="onFileChange"/>
+                <button class="button" @click.prevent="create()">Publier</button>
             </form>
         </div>
     </div>
@@ -21,30 +24,50 @@ export default {
     data: function() {
         return {
             mode: 'clean',
-            title: '',
-            content: '',
-            attachment: '',
-            idUSERS: ''
+            title: null,
+            content: null,
+            attachment: null,
+            userId: ''
         }
     },
     methods: {
-        async create() {
-            await axios.post('http://localhost:3000/api/post/',{
-                idUSERS: localStorage.id,
-                title: this.title,
-                content: this.content,
-                attachment: this.attachment,
-            })
+        create() {
+            const fd = new FormData();
+            fd.append("attachment", this.attachment);
+            fd.append("title", this.title);
+            fd.append("content", this.content);
+            axios.post('http://localhost:3000/api/post/', fd,
+            {
+                'content-type': 'multipart/form-data',
+                headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }
+        })
             .then(function() {
                 this.$router.push('/navig');
             })
             .catch(error => console.log(error))
+        },
+        back() {
+            this.$router.push('/navig');
+        },
+        onFileChange(e) {
+            this.attachment = e.target.files[0] || e.dataTransfer.files;
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.titre{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .fa:hover{
+        cursor: pointer;
+    }
+}
 .form-row {
     display: flex;
     margin: 16px 0px;

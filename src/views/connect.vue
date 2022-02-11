@@ -43,7 +43,6 @@ export default {
   },
   mounted() {
     localStorage.clear();
-    console.log(localStorage);
   },
   methods: {
     switchToSignup() {
@@ -60,7 +59,8 @@ export default {
       axios.post('http://localhost:3000/api/auth/login', dataProfil)
       .then((reponse) => {
         this.profil = reponse.data;
-        localStorage.id = this.profil.user;
+        localStorage.id = this.profil.userId;
+        localStorage.token = this.profil.token
         this.$router.push('/navig');
       })
       .catch(error => console.log(error))

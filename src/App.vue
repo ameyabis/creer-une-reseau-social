@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <font-awesome-icon icon="user-secret" /> -->
     <router-view/>
   </div>
 </template>
