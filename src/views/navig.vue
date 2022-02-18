@@ -2,7 +2,10 @@
   <div>
     <nav>
       <img class="logo" src="../assets/icon-left-font-monochrome-white.png" alt="">
-      <fa class="fa" @click="goToProfil()" icon="user-circle"/>
+      <div class="profil">
+        <p @click="deconnexion()">Deconnexion</p>
+        <fa class="fa" @click="goToProfil()" icon="user-circle"/>
+      </div>
     </nav>
     <main id="main">
       <button class="button" @click="switchToCreate()">Créer votre publication</button>
@@ -25,6 +28,9 @@ export default {
     },
     goToProfil() {
       this.$router.push('/profil');
+    },
+    deconnexion() {
+      this.$router.push('/')
     }
   }
 }
@@ -52,11 +58,22 @@ export default {
     cursor: pointer;
   }
 
+  p{
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
   a:hover{
     cursor: pointer;
   }
 
   .logo{
     width: 200px;
+  }
+
+  .profil{
+    display: flex;
+    align-items: center;
   }
 </style>

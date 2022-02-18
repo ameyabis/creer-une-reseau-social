@@ -10,7 +10,7 @@
                 <input v-model="title" type="text" name="title" id="title" placeholder="Titre"  class="form-row__input" required>
                 <input v-model="content" type="text" name="content" id="content" placeholder="Contenu" class="form-row__input" required>
                 <input type="file" name="attachment" id="attachment" class="form-row__input" aria-describedby="inputFileAddon" @change="onFileChange"/>
-                <button class="button" @click.prevent="create()">Publier</button>
+                <button class="button" @click.="create()">Publier</button>
             </form>
         </div>
     </div>

@@ -49,14 +49,14 @@ export default {
     },
     methods: {
       modifier(id) {
-        const fd = new FormData();
-        fd.append("attachment", this.attachment);
-        fd.append("title", this.title);
-        fd.append("content", this.content);
-         axios.put(`http://localhost:3000/api/post/${id}`, {
-            title: this.title,
-            content: this.content,
-            attachment: this.attachment
+      const fd = new FormData();
+      fd.append("attachment", this.attachment);
+      fd.append("title", this.title);
+      fd.append("content", this.content);
+        axios.put(`http://localhost:3000/api/post/${id}`, {
+          title: this.title,
+          content: this.content,
+          attachment: this.attachment
         }, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")

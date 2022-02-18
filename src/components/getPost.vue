@@ -20,8 +20,13 @@
             <fa class="fa" @click="supprimer(post.id)" icon="trash"/>
           </div>
           <div>
-            <fa class="fa" :icon="['far', 'thumbs-up']"/>
-            <fa class="fa" :icon="['far', 'thumbs-down']"/>
+            <fa v-if="faLike == 'false'" @click="likePost(post.id, like = 1)" class="fa" :icon="['far', 'thumbs-up']"/>
+            <fa v-if="faLike == 'true'" class="fa" :icon="['fas', 'thumbs-up']"/>
+            <p class="numberLike">{{post.likes}}</p>
+            <fa v-if="faDislike == 'false'" @click="likePost(post.id, like = -1)" class="fa" :icon="['far', 'thumbs-down']"/>
+            <fa v-if="faDislike == 'true'" class="fa" :icon="['fas', 'thumbs-down']"/>
+            <p class="numberDislike">{{post.dislikes}}</p>
+            <p>{{usersLike}}</p>
           </div>
         </div>
       </figure>
@@ -31,19 +36,22 @@
 
 <script>
 const axios = require("axios");
-// import { getUnixTime } from "date-fns";
 
 export default {
   name: 'getPost',
   data(){
     return{
       mode: '',
+
       post: null,
-      profil: null,
-      id: '',
+      
       userId: localStorage.id,
-      like: '',
-      userLiked: ''
+
+      like: 0,
+      usersLike: '',
+
+      faLike: 'false',
+      faDislike: 'false'
     }
   },
   mounted(){
@@ -52,9 +60,23 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token")
       }
     })
-    .then(reponse => {
-      this.post = reponse.data;
+    .then(async reponse => {
+      this.post = await reponse.data;
+      this.usersLike = this.post.usersLike;
+
+      // this.usersLike = this.post.usersLike.split(',');
+      // var idLike = 0;
+
+      // for(var i = 0; this.usersLike[i] != this.userId; i++) {
+      //     if(this.usersLike[i] != undefined){
+      //       idLike = i
+      //       console.log(idLike)
+      //     } else {
+      //       break;
+      //     }
+      //   }
     })
+    
   },
   methods: {
     supprimer(id) {
@@ -70,6 +92,16 @@ export default {
     },
     goToUpdate(id) {
       this.$router.push(`/updatePost?id=${id}`)
+    },
+    likePost(id) {
+      axios.post(`http://localhost:3000/api/post/${id}/like`, {
+        like : this.like,
+        userId : this.userId
+      }, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
     }
   },
 }
