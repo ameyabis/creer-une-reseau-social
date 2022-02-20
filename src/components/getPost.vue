@@ -6,6 +6,7 @@
           <div class="headerPost">
             <p id="post_nom">{{post.User.firstname + ' ' + post.User.surname}}</p>
             <p id="post_title">{{post.title}}</p>
+            <p>ID{{post.User.id}}</p>
           </div>
           <!-- <p id="post_date">{{post.createdAt}}</p> -->
           <div class="post">
@@ -14,13 +15,13 @@
           </div>
         </div>
         <div class="icon">
-          <!-- <div class="edit" v-if="post.User.id == userId"> -->
-          <div class="edit">
+          <div class="edit" v-if="post.UserId == userId">
+          <!-- <div class="edit"> -->
             <fa class="fa" @click="goToUpdate(post.id)" icon="edit"/>
             <fa class="fa" @click="supprimer(post.id)" icon="trash"/>
           </div>
-          <div>
-            <fa v-if="faLike == 'false'" @click="likePost(post.id, like = 1)" class="fa" :icon="['far', 'thumbs-up']"/>
+          <div :key="post.usersLike" v-for="post in post">
+            <fa v-if="post.usersLike.split(',')" @click="likePost(post.id, like = 1)" class="fa" :icon="['far', 'thumbs-up']"/>
             <fa v-if="faLike == 'true'" class="fa" :icon="['fas', 'thumbs-up']"/>
             <p class="numberLike">{{post.likes}}</p>
             <fa v-if="faDislike == 'false'" @click="likePost(post.id, like = -1)" class="fa" :icon="['far', 'thumbs-down']"/>
@@ -62,7 +63,11 @@ export default {
     })
     .then(async reponse => {
       this.post = await reponse.data;
+      console.log(this.post)
       this.usersLike = this.post.usersLike;
+      // if (this.post.User.id == this.userId){
+      //   console.log('coucou')
+      // }
 
       // this.usersLike = this.post.usersLike.split(',');
       // var idLike = 0;
@@ -101,6 +106,9 @@ export default {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
+      })
+      .then(() => {
+        location.reload()
       })
     }
   },
